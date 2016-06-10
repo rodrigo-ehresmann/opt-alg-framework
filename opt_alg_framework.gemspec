@@ -10,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.email         = ["igoehresmann@gmail.com"]
 
   spec.summary       = %q{Gem with a optimization algorithm framework that implements problems, algorithms and operator classes.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  #spec.description   = %q{TODO}
+  spec.homepage      = "https://github.com/rodrigo-ehresmann/opt_alg_framework"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
