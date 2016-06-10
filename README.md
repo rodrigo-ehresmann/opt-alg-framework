@@ -2,9 +2,26 @@ README NOT READY!
 
 # OptAlgFramework
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/opt_alg_framework`. To experiment with that code, run `bin/console` for an interactive prompt.
+Opt-Alg-Framework is an framework to work and build with optimization algorithm. The basic idea is: you will have a codificated problem with a method to calculate its fitnes, an algorithm to improve the this fitness and operators used with the algorithm to build new solutions.
 
-TODO: Delete this and the text above, and describe your gem
+What is already implemented:
+
+  * Problems:
+    * Flow Shop Permutation
+
+  * Algorithms:
+    * Local Searches:
+      * Hill-Climbing
+      * Simulated Annealing
+      * Tabu Search
+     
+  * Operators
+    * Crossover:
+      * Two Point Crossover (permutational)
+    * Selector:
+      * Tournament Selection
+    * Tweak:
+      * Random Swap 
 
 ## Installation
 
@@ -24,7 +41,20 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+instances = ["path_to_instance1", "path_to_instance2"]
+
+instances.each do |path|
+  operator = Operator::Tweak::RandomSwap.new
+  problem = Problem::FSP.new
+  fsp.load_schedule(path)
+  algorithm = Algorithm::LocalSearch::SimulatedAnnealing.new max_iterations: 10,
+                                                             cooling_rate: 0.009,
+                                                             problem: problem
+                                                             tweak_operator: operator
+
+  result = algorithm.start
+  puts result[:fitness]
+ end
 
 ## Development
 
