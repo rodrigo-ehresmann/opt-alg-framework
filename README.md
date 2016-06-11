@@ -47,10 +47,10 @@ instances = ["path_to_instance1", "path_to_instance2"]
 instances.each do |path|
   operator = Operator::Tweak::RandomSwap.new
   problem = Problem::FSP.new
-  fsp.load_schedule(path)
+  problem.load_schedule(path)
   algorithm = Algorithm::LocalSearch::SimulatedAnnealing.new max_iterations: 10,
                                                              cooling_rate: 0.009,
-                                                             problem: problem
+                                                             problem: problem,
                                                              tweak_operator: operator
 
   result = algorithm.start
