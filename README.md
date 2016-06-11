@@ -74,7 +74,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ####TODO:
 
-   * Treatments to verify if the conventions are being follow;
+   * Treatments to verify if the conventions are being followed;
    * Geral implementations, like:
      * Local search algorithms;
      * Population based algorithms;
