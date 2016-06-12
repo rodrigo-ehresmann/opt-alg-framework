@@ -10,7 +10,6 @@ Gem::Specification.new do |spec|
   spec.email         = ["igoehresmann@gmail.com"]
 
   spec.summary       = %q{Gem with a optimization algorithm framework that implements problems, algorithms and operator classes.}
-  #spec.description   = %q{TODO}
   spec.homepage      = "https://github.com/rodrigo-ehresmann/opt_alg_framework"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
@@ -19,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = 'http://mygemserver.com'
+    spec.metadata['allowed_push_host'] = 'https://rubygems.org'
   end
 
   spec.add_development_dependency "bundler", "~> 1.9"
