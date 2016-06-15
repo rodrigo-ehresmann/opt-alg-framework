@@ -11,6 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Gem with a optimization algorithm framework that implements problems, algorithms and operator classes.}
   spec.homepage      = "https://github.com/rodrigo-ehresmann/opt_alg_framework"
+  spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
