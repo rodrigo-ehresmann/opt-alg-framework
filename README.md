@@ -1,6 +1,6 @@
 # OptAlgFramework
 
-Opt-Alg-Framework is an framework to work and build with optimization algorithm. The basic idea is: you will have a codificated problem with a method to calculate its fitnes, an algorithm to improve the this fitness and operators used with the algorithm to build new solutions.
+Opt-Alg-Framework is a framework to work and build optimization algorithm. The basic idea is: you will have a codificated problem with a method to calculate its fitnes, an algorithm to improve the this fitness and operators used with the algorithm to build new solutions.
 
 What is already implemented:
 
@@ -69,6 +69,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
   * All problem classes need to have its fitness method acessible with the name *fitness*;
   * All swap operator classes need to have its swap method acessible with the name *tweak*;
   * All crossover operator classes need to have its crossover method named *cross*;
+  * All selector operator classes need to have its selection method names *select*;
   * All algorithm classes need to have its main method names *start*;
   * In the algorithms, a solution is represent with a hash structure, and it's mandatory have at least the pair key-value *:solution* with the representation of the solution and *:fitness* with the fitness of the solution.
 
