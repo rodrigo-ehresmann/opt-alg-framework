@@ -1,9 +1,8 @@
 module Problem
-  
-  class FSP
 
+  class FSP
       # Inner class who represents the production schedule, that is, a matrix were the rows are the tasks
-      # and the columns the machines. 
+      # and the columns the machines.
       class Schedule
         require 'matrix'
 
@@ -15,10 +14,10 @@ module Problem
           File.foreach(path).each do |line|
             rows << line.split(" ").collect{ |e| e.to_i }
           end
-          @schedule = Matrix.rows(rows).transpose # 'Transpose' is used because the instances in the folder have the tasks inverted with the machines
+          @schedule = Matrix.rows(rows).transpose # 'Transpose' is used because normaly the instances have the machines inverted with the tasks
         end
 
-        # Given a sequence of tasks, reorder the schedule in this sequence  
+        # Given a sequence of tasks, reorder the schedule in this sequence
         def reorder_schedule(tasks_sequence)
           rows = Array.new
           tasks_sequence.each do |task|
@@ -47,7 +46,7 @@ module Problem
         @default_solution = (0...@schedule.schedule.row_size).to_a
       end
 
-      # Fitness function. The hash options are: 
+      # Fitness function. The hash options are:
       # - schedule: matrix of the production schedule;
       # - task: task index;
       # - machine: machine index;
@@ -70,7 +69,7 @@ module Problem
           if task == 0 && machine == 0
             return time
           end
-          if task > 0 # Before everithing, calculate the time spent in the tasks from N to 0 
+          if task > 0 # Before everithing, calculate the time spent in the tasks from N to 0
             time_task_before = memory["#{task - 1},#{machine}"]
             time_task_before = makespan({schedule: schedule, task: task - 1, machine: machine, memory: memory}, block) if memory["#{task - 1},#{machine}"].nil?
           end
