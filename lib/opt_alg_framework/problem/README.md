@@ -1,4 +1,4 @@
-# About the instaces of the problems
+# About the problem instances
 
 ## FSP (Flow Shop Permutation)
 The instance of this kind of problem is a matrix, specifically a matrix where the rows are tasks and columns are machines. The fitness method need that to work properly.
