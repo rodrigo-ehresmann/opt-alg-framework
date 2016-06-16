@@ -1,5 +1,6 @@
 module Problem
 
+  # FSP class have a inner class Schedule
   class FSP
       # Inner class who represents the production schedule, that is, a matrix were the rows are the tasks
       # and the columns the machines.
@@ -9,12 +10,12 @@ module Problem
         attr_reader :schedule
 
         # Fill the schedule reading the an instance from a file
-        def build_from_file(path)
+        def build_from_file(path, transpose)
           rows = Array.new
           File.foreach(path).each do |line|
             rows << line.split(" ").collect{ |e| e.to_i }
           end
-          @schedule = Matrix.rows(rows).transpose # 'Transpose' is used because normaly the instances have the machines inverted with the tasks
+          @schedule = transpose ? Matrix.rows(rows).transpose : Matrix.rows(rows)
         end
 
         # Given a sequence of tasks, reorder the schedule in this sequence
@@ -41,8 +42,8 @@ module Problem
       end
 
       # Load the production schedule from a file
-      def load_schedule(path)
-        @schedule.build_from_file(path)
+      def load_schedule(path, transpose = false)
+        @schedule.build_from_file(path, transpose)
         @default_solution = (0...@schedule.schedule.row_size).to_a
       end
 
@@ -53,7 +54,7 @@ module Problem
       # - memory: store the total time spent at the point where the task index X is processed at the machine index Y
       #   (that avoid desnecessary recursive calls);
       # - tasks_sequence: sequence of tasks used to reorganize the schedule after calculate its makespan.
-      # The default use of the method is: only inform the tasks sequence as parameter and the method do all the work,
+      # The default use of the method is: inform the tasks sequence as parameter and the method do all the work,
       # returning the makespan as result.
       def makespan(options = {}, block = @@bigger)
         if options[:tasks_sequence]

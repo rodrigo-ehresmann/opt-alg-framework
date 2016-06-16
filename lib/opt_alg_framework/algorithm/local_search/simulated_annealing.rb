@@ -4,8 +4,8 @@ module Algorithm
       include Math
       attr_reader :temperature
 
-      # Initialize specifying the cooling rate percentage (@cooling_rate), number of iterations in each 
-      # temperature (@max_iterations) and passing an instantiated problem and tweak operator class.  
+      # Initialize specifying the cooling rate percentage (@cooling_rate), number of iterations in each
+      # temperature (@max_iterations) and passing an instantiated problem and tweak operator class.
       def initialize(params)
         @cooling_rate = params[:cooling_rate]
         @problem = params[:problem]
@@ -25,7 +25,6 @@ module Algorithm
             neighbor = encapsulate_solution(@tweak_operator.tweak(current[:solution]))
             current = neighbor.dup if accept?(current[:fitness], neighbor[:fitness], temperature)
             best = current.dup if current[:fitness] < best[:fitness]
-            puts best[:fitness]
             iteration += 1
           end
           temperature *= 1 - @cooling_rate
@@ -35,7 +34,7 @@ module Algorithm
 
       private
 
-      # Calculate the initial temperature, generating N neighbors of an initial solution and 
+      # Calculate the initial temperature, generating N neighbors of an initial solution and
       # setting as initial temperature the neighbor with the worst fitness.
       def initial_temperature
         solution = encapsulate_solution(@problem.default_solution.shuffle)

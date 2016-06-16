@@ -12,14 +12,14 @@ What is already implemented:
       * Hill-Climbing
       * Simulated Annealing
       * Tabu Search
-     
+
   * Operators
     * Crossover:
       * Two Point Crossover (permutational)
     * Selector:
       * Tournament Selection
     * Tweak:
-      * Random Swap 
+      * Random Swap
 
 ## Installation
 
@@ -39,23 +39,18 @@ Or install it yourself as:
 
 ## Usage
 
-Example: read two instances of FSP problem and get its best results with Simulated Annealing algorithm, using RandomSwap operator.
+Example: read two instances of FSP problem (about the instances format, read README in *problem* directory!) and get its best results with Simulated Annealing algorithm, using RandomSwap operator.
 
 ```ruby
-instances = ["path_to_instance1", "path_to_instance2"]
+operator = Operator::Tweak::RandomSwap.new
+problem = Problem::FSP.new
+problem.load_schedule(path)
+algorithm = Algorithm::LocalSearch::SimulatedAnnealing.new max_iterations: 10,
+                                                           cooling_rate: 0.009,
+                                                           problem: problem,
+                                                           tweak_operator: operator
 
-instances.each do |path|
-  operator = Operator::Tweak::RandomSwap.new
-  problem = Problem::FSP.new
-  problem.load_schedule(path)
-  algorithm = Algorithm::LocalSearch::SimulatedAnnealing.new max_iterations: 10,
-                                                             cooling_rate: 0.009,
-                                                             problem: problem,
-                                                             tweak_operator: operator
-
-  result = algorithm.start
-  puts result[:fitness]
- end
+puts algorithm.start[:fitness]
 ```
 
 ## Development
