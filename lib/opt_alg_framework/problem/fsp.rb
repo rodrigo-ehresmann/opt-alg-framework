@@ -1,10 +1,12 @@
 module Problem
-
+  #require 'opt_alg_framework/problem/problem_interface'
   # FSP class have a inner class Schedule
   class FSP
-      # Inner class who represents the production schedule, that is, a matrix were the rows are the tasks
-      # and the columns the machines.
-      class Schedule
+    implements ProblemInterface
+
+      # Inner class who represents the production schedule, that is, a matrix
+      # were the rows are the tasks and the columns the machines.
+      class Production
         require 'matrix'
 
         attr_reader :schedule
@@ -28,61 +30,66 @@ module Problem
         end
       end
 
-      attr_reader :default_solution # Is the sequence of tasks ordered from 0...N
+    attr_reader :default_solution # Is the sequence of tasks ordered from 0...N
 
-      # Used in makespan function to compare two execution times (also if one of them or the two are blank)
-      @@bigger = Proc.new do |a, b|
-        a ||= b ||= 0
-        if a > b ||= 0 then a else b end
+    # Used in makespan function to compare two execution times (also if one of them or the two are blank)
+
+    # Initialize the FSP problem with a empty schedule
+    def initialize
+      @production = Production.new
+    end
+
+    # Load the production schedule from a file
+    def load_instance(path)
+      transpose = block_given? ? yield : false
+      @production.build_from_file(path, transpose)
+      @default_solution = (0...@production.schedule.row_size).to_a
+    end
+
+    def fitness(solution)
+      schedule = @production.reorder_schedule(solution)
+      makespan(schedule: schedule, task: schedule.row_size - 1,
+                machine: schedule.column_size - 1, memory: {})
+    end
+
+    private
+
+    def bigger(num1 = 0, num2 = 0)
+      num1 ||= num2 ||= 0
+      if num1 > num2 ||= 0 then num1 else num2 end
+    end
+
+    # The hash options are:
+    # - schedule: matrix of the production schedule;
+    # - task: task index;
+    # - machine: machine index;
+    # - memory: store the total time spent at the point where the task index X is processed at the machine index Y
+    #   (that avoid desnecessary recursive calls).
+    def makespan(options = {})
+      schedule = options[:schedule]
+      task = options[:task]
+      machine = options[:machine]
+      memory = options[:memory]
+      key = "#{task},#{machine}"
+      time = schedule[task, machine]
+
+      return time if task == 0 && machine == 0
+
+      if task > 0 # Before everithing, calculate the time spent in the tasks from N to 0
+        time_task_before = memory["#{task - 1},#{machine}"]
+        time_task_before = makespan(schedule: schedule, task: task - 1,
+                           machine: machine, memory: memory) if memory["#{task - 1},#{machine}"].nil?
       end
 
-      # Initialize the FSP problem with a empty schedule
-      def initialize
-        @schedule = Schedule.new()
+      if machine > 0 # Calculate the time spent of the same task at the machines from N to 0
+        time_machine_before = memory["#{task},#{machine - 1}"]
+        time_machine_before = makespan(schedule: schedule, task: task,
+                              machine: machine - 1, memory: memory) if memory["#{task},#{machine - 1}"].nil?
       end
 
-      # Load the production schedule from a file
-      def load_schedule(path, transpose = false)
-        @schedule.build_from_file(path, transpose)
-        @default_solution = (0...@schedule.schedule.row_size).to_a
-      end
-
-      # Fitness function. The hash options are:
-      # - schedule: matrix of the production schedule;
-      # - task: task index;
-      # - machine: machine index;
-      # - memory: store the total time spent at the point where the task index X is processed at the machine index Y
-      #   (that avoid desnecessary recursive calls);
-      # - tasks_sequence: sequence of tasks used to reorganize the schedule after calculate its makespan.
-      # The default use of the method is: inform the tasks sequence as parameter and the method do all the work,
-      # returning the makespan as result.
-      def makespan(options = {}, block = @@bigger)
-        if options[:tasks_sequence]
-          schedule = @schedule.reorder_schedule(options[:tasks_sequence])
-          makespan({schedule: schedule, task: schedule.row_size - 1, machine: schedule.column_size - 1, memory: {}}, block)
-        else
-          schedule = options[:schedule]
-          task = options[:task]
-          machine = options[:machine]
-          memory = options[:memory]
-          key = "#{task},#{machine}"
-          time = schedule[task, machine]
-          if task == 0 && machine == 0
-            return time
-          end
-          if task > 0 # Before everithing, calculate the time spent in the tasks from N to 0
-            time_task_before = memory["#{task - 1},#{machine}"]
-            time_task_before = makespan({schedule: schedule, task: task - 1, machine: machine, memory: memory}, block) if memory["#{task - 1},#{machine}"].nil?
-          end
-          if machine > 0 # Calculate the time spent  at the machines from N to 0
-            time_machine_before = memory["#{task},#{machine - 1}"]
-            time_machine_before = makespan({schedule: schedule, task: task, machine: machine - 1, memory: memory}, block) if memory["#{task},#{machine - 1}"].nil?
-          end
-          total_time = block.call(time_task_before, time_machine_before) + time # Calculate the total time
-          memory[key] = total_time # Store the total time
-          total_time
-        end
-      end
-      alias :fitness :makespan # Needed because, in the algorithm classes, to be generic we call  the 'fitness' function (all problem classes need to have a 'fitness' function)
+      total_time = bigger(time_task_before, time_machine_before) + time # Calculate the total time
+      memory[key] = total_time # Store the total time
+      total_time
+    end
   end
 end
