@@ -1,7 +1,10 @@
-# Standardization
+# IMplementation Details
 
-  All problem classes must to be inside `Problem` module;
-  All problem classes must use `implements ProblemInterface`.   
+  * Inside your class, use `implements ProblemInterface`. That provides an interface behavior, enforcing
+  the implementation of mandatory methods;
+  * Organize algorithm class inside modules (e.g., `FSP` class);
+  * `initialize` have no arguments;
+  * Make sure that you have `attr_reader :default_solution` in your class and fill this instance variable with an initial solution. This variable will be called inside algorithm classes.  
 
 # About the problem instances
 
