@@ -1,8 +1,8 @@
 module Algorithm
   module LocalSearch
     class SimulatedAnnealing
+      include AlgorithmInterface
       include Math
-      attr_reader :temperature
 
       # Initialize specifying the cooling rate percentage (@cooling_rate), number of iterations in each
       # temperature (@max_iterations) and passing an instantiated problem and tweak operator class.
@@ -14,22 +14,24 @@ module Algorithm
         @temperature = initial_temperature
       end
 
-      # Main method.
+      # solution_b = best solution
+      # solution_n = neighbor solution
+      # solution_c = current solution
       def start
-        best = encapsulate_solution(@problem.default_solution.shuffle)
-        current = best.dup
+        solution_b = encapsulate_solution(@problem.default_solution.shuffle)
+        solution_c = solution_b.dup
         temperature = @temperature
         while temperature > 1 do
           iteration = 1
           while iteration < @max_iterations do
-            neighbor = encapsulate_solution(@tweak_operator.tweak(current[:solution]))
-            current = neighbor.dup if accept?(current[:fitness], neighbor[:fitness], temperature)
-            best = current.dup if current[:fitness] < best[:fitness]
+            solution_n = encapsulate_solution(@tweak_operator.tweak(solution_c[:solution]))
+            solution_c = solution_n.dup if accept?(solution_c[:fitness], solution_n[:fitness], temperature)
+            solution_b = solution_c.dup if solution_c[:fitness] < solution_b[:fitness]
             iteration += 1
           end
           temperature *= 1 - @cooling_rate
         end
-        best
+        solution_b
       end
 
       private
@@ -50,7 +52,7 @@ module Algorithm
       def encapsulate_solution(solution)
         hash = Hash.new
         hash[:solution] = solution
-        hash[:fitness] = @problem.fitness(tasks_sequence: solution)
+        hash[:fitness] = @problem.fitness(solution)
         hash
       end
 
