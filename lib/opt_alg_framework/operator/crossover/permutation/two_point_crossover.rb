@@ -2,7 +2,7 @@ module Operator
   module Crossover
     module Permutation
       class TwoPointCrossover
-        implements PermutationCrossoverInterface
+        implements CrossoverInterface
 
         # Main method.
         def cross(chromossome1, chromossome2)

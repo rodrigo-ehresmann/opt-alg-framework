@@ -1,6 +1,6 @@
 require 'interface'
 
-module PermutationCrossoverInterface
+module CrossoverInterface
   include Interface
 
   def initialize
