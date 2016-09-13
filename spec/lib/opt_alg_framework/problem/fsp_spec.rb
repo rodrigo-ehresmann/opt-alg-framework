@@ -14,7 +14,7 @@ describe Problem::FSP do
 
       it "should return the right makespan" do
         instances.each do |instance, solution|
-          problem.load_instance("#{Dir.pwd}/spec/instances/#{instance}.txt")
+          problem.load_instance("#{Dir.pwd}/spec/instances/fsp/#{instance}.txt")
           solution.each do |tasks_sequence, result|
             expect(problem.fitness(tasks_sequence)).to eq(result)
           end
@@ -32,7 +32,7 @@ describe Problem::FSP do
 
       it "should return the right makespan" do
         transposed_instances.each do |instance, solution|
-          problem.load_instance("#{Dir.pwd}/spec/instances/#{instance}.txt") { true }
+          problem.load_instance("#{Dir.pwd}/spec/instances/fsp/#{instance}.txt") { true }
           solution.each do |tasks_sequence, result|
             expect(problem.fitness(tasks_sequence)).to eq(result)
           end
