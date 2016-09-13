@@ -1,4 +1,4 @@
-# IMplementation Details
+# Implementation Details
 
   * Inside your class, use `implements ProblemInterface`. That provides an interface behavior, enforcing
   the implementation of mandatory methods;
