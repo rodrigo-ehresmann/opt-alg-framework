@@ -1,8 +1,9 @@
 module Operator
   module Crossover
     module Permutation
-
       class TwoPointCrossover
+        implements PermutationCrossoverInterface
+
         # Main method.
         def cross(chromossome1, chromossome2)
           point1 = Random.rand(0..chromossome1.size - 1)
@@ -27,7 +28,7 @@ module Operator
           start_piece + middle_piece + end_piece
         end
       end
-      
+
     end
   end
 end

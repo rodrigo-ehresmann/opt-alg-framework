@@ -1,8 +1,8 @@
 module Operator
   module Tweak
-
     class RandomSwap
-      # Main method.
+      implements TweakInterface
+
       def tweak(solution)
         copy = solution.dup
         piece1 = Random.rand(0...copy.size)
@@ -13,6 +13,5 @@ module Operator
         copy
       end
     end
-
   end
 end

@@ -1,7 +1,8 @@
 module Operator
   module Selector
-
     class TournamentSelection
+      implements SelectorInterface
+
       # Initialize informing the tournament size.
       def initialize(size)
         @size = size
@@ -17,6 +18,5 @@ module Operator
         best_individual
       end
     end
-
   end
 end
