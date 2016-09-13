@@ -3,6 +3,7 @@ module Problem
   # FSP class have a inner class Schedule
   class FSP
     implements ProblemInterface
+    attr_reader :default_solution
 
       # Inner class who represents the production schedule, that is, a matrix
       # were the rows are the tasks and the columns the machines.
@@ -29,10 +30,6 @@ module Problem
           Matrix.rows(rows)
         end
       end
-
-    attr_reader :default_solution # Is the sequence of tasks ordered from 0...N
-
-    # Used in makespan function to compare two execution times (also if one of them or the two are blank)
 
     # Initialize the FSP problem with a empty schedule
     def initialize
